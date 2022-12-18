@@ -1,0 +1,35 @@
+Code file img.bat
+
+@echo off
+mode con: lines=42 cols=119
+set /p sys=<sys\img.dll
+cls
+cd image
+dir /b /p
+set /p izo=
+cd..
+set "scale=100"
+:a
+cls
+color 17
+cls
+color 70
+sys\insertbmp /p:"image\%izo%" /x:0 /y:0 /z:%scale%
+sys\insertbmp /p:"sys\sys.bmp" /x:0 /y:489 /z:0
+sys\Batbox /g 0 41 /c 0x70 /d "%izo%"
+sys\Batbox /g 10 41 /c 0x70 /d "zoom:%scale%"
+
+:b
+for /f "tokens=1,2,3 delims=:" %%a in ('sys\batbox /y') do (
+    set c=%%c
+    set y=%%b
+    set x=%%a
+)
+if "%c%" == "%sys%" set /a scale+=1 & goto :a
+if "%c%" == "-7864320" if "%scale%" GTR "-1" set /a scale-=1 & goto :a
+goto :b
+
+
+Code file img.dll
+
+7864320
